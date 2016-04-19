@@ -17,15 +17,9 @@
 # define MOTION_NOTIFY          8
 # define PTR_MOTION_MASK        (1 << 8)
 
-# define STARTX (200)
-# define STARTY (100)
-# define INC e->zoom
 # define HEIGHT 1200
 # define WIDTH 	1700
 # define OFF 	100
-# define YOFF	e->off2
-# define SX1 	e->coord[i][0]->size_x
-# define SX2 	e->coord[i + 1][0]->size_x
 
 # define MK_UP  126
 # define MK_DW  125
@@ -54,5 +48,12 @@
 # define BLUE	0X048B9A
 # define GREEN	0x1A9026
 # define RED	0xA1124B
+# define YELLOW	0xE9B21C
+# define VIOLET	0x6E47CA
+# define ORANGE	0xFF5B2B
+# define LG		0xAEEE00
+# define LR		0x8E3557
+# define LY		0xFFDA8C
 
+# define D      (double)(M_PI / 180.0)
 #endif

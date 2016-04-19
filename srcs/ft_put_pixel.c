@@ -12,74 +12,82 @@
 
 #include "ft_fdf.h"
 
-int		fdf_draw_line_t1(t_env *e)
+void					put_pixel(t_img *e, int x, int y, int color)
 {
-	int dx;
-	int dy;
-	int color;
+	const unsigned int	bytes = e->bpp / 8;
+	const unsigned int	p = x * bytes + y * e->line_size;
+	size_t				i;
 
-	color = RED;
-	dx = (e->xb - e->xa);
-	dy = (e->yb - e->ya);
-	if (abs(dx) > abs(dy))
-		while (dx += (dx < 0) - (dx > 0))
-			mlx_pixel_put(e->mlx, e->win, e->xa + dx,
-e->ya + dx * (e->yb - e->ya) / (e->xb - e->xa), color);
-	else
-		while (dy += (dy < 0) - (dy > 0))
-			mlx_pixel_put(e->mlx,
-e->win, e->xa + dy * (e->xb - e->xa) / (e->yb - e->ya),
-e->ya + dy, color);
-	return (0);
+	i = 0;
+	while (i < bytes)
+	{
+		e->d[p + i] = color;
+		color >>= 8;
+		i++;
+	}
 }
 
-int		fdf_draw_line_t2(t_env *e)
+int						try_color(int red, int blue, int green)
 {
-	int dx;
-	int dy;
-	int color;
-
-	color = GREEN;
-	dx = (e->xc - e->xa);
-	dy = (e->yc - e->ya);
-	if (abs(dx) > abs(dy))
-	{
-		while (dx += (dx < 0) - (dx > 0))
-			mlx_pixel_put(e->mlx, e->win, e->xa + dx,
-e->ya + dx * (e->yc - e->ya) / (e->xc - e->xa), color);
-	}
-	else
-	{
-		while (dy += (dy < 0) - (dy > 0))
-			mlx_pixel_put(e->mlx,
-e->win, e->xa + dy * (e->xc - e->xa) / (e->yc - e->ya),
-e->ya + dy, color);
-	}
-	return (0);
+    return ((red << 16) + (blue << 8) + green);
 }
-
-int		fdf_draw_line_t3(t_env *e)
+int			fdf_draw_line(t_env *e, int x1, int x2, int y1, int y2, int color)
 {
-	int dx;
-	int dy;
-	int color;
-
-	color = BLUE;
-	dx = (e->xc - e->xb);
-	dy = (e->yc - e->yb);
+		int dx;
+		int dy;
+	
+	dx = (x1 - x2);
+	dy = (y1 - y2);
+	e->xo[e->inc] = e->xn;
+	e->yo[e->inc++] = e->yn;
 	if (abs(dx) > abs(dy))
 	{
 		while (dx += (dx < 0) - (dx > 0))
-			mlx_pixel_put(e->mlx, e->win, e->xb + dx,
-e->yb + dx * (e->yc - e->yb) / (e->xc - e->xb), color);
+		{
+				e->xn = x2 + dx;
+				e->yn = y2 + dx * (y1 - y2) / (x1 - x2);
+			put_pixel(e->f, e->xn, e->yn, color);
+		}
 	}
 	else
 	{
 		while (dy += (dy < 0) - (dy > 0))
-			mlx_pixel_put(e->mlx,
-e->win, e->xb + dy * (e->xc - e->xb) / (e->yc - e->yb),
-e->yb + dy, color);
+		{
+			e->xn = x2 + dy * (x1 - x2) / (y1 - y2);
+			e->yn = y2 + dy;
+			put_pixel(e->f, e->xn, e->yn, color);
+		}
 	}
+	mlx_put_image_to_window(e->mlx, e->win, e->f->img, 0, 0);
 	return (0);
 }
+int			flemme_draw_line(t_env *e, int x1, int x2, int y1, int y2, int color)
+{
+		int dx;
+		int dy;
+	
+	dx = (x1 - x2);
+	dy = (y1 - y2);
+	if (abs(dx) > abs(dy))
+	{
+		while (dx += (dx < 0) - (dx > 0))
+		{
+				e->xn = x2 + dx;
+				e->yn = y2 + dx * (y1 - y2) / (x1 - x2);
+			put_pixel(e->f, e->xn, e->yn, color);
+		}
+	}
+	else
+	{
+		while (dy += (dy < 0) - (dy > 0))
+		{
+			e->xn = x2 + dy * (x1 - x2) / (y1 - y2);
+			e->yn = y2 + dy;
+			put_pixel(e->f, e->xn, e->yn, color);
+		}
+	}
+	mlx_put_image_to_window(e->mlx, e->win, e->f->img, 0, 0);
+	return (0);
+}
+
 
