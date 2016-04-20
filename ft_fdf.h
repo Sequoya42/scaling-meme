@@ -37,16 +37,14 @@ typedef struct		s_env
 	void			*win;
 	t_img			*f;
 	//TRIANGLE STUFF
-	int				xa;
-	int				xb;
-	int				xc;
-	int				ya;
-	int				yb;
-	int				yc;
 	int				xn;
 	int				yn;
-	int				xo[16];
-	int				yo[16];
+	int				mp;
+	int				yp;
+	int				xsym;
+	int				ysym;
+	int				xo[64];
+	int				yo[64];
 	//SIDE OF TRIANGLE
 	int				a;
 	int				b;
@@ -54,9 +52,12 @@ typedef struct		s_env
 	int				length;
 	int				angle;
 	int				inc;
+	float			alpha;
+	float			beta;
 }					t_env;
-
-int			flemme_draw_line(t_env *e, int x1, int x2, int y1, int y2, int color);
+void		test_misc(int x, int y, int angle, int r, t_env *e, int color);
+void		draw_false_shit(int x, int y, int angle, int r, t_env *e, int color);
+int					flemme_draw_line(t_env *e, int x1, int x2, int y1, int y2, int color);
 void				ft_calc_pixel(t_env *e, int i, int j);
 void				get_real_coord(t_env *e);
 void				ft_put_pixel(t_env *e, int i, int j);
@@ -71,4 +72,12 @@ void				put_pixel(t_img *e, int x, int y, int color);
 int					try_color(int red, int blue, int green);
 void 				draw_circle(t_env *e, int x, int y, int l);
 void				draw_polar(int x, int y, int angle, int r, t_env *e, int color);
+void				init_value(t_env *e);
+
+//MISC
+void				draw_outer_circle(int length, t_env *e);
+void				get_abc(int x1, int y1, int x2, int y2, t_env *e);
+void				get_length(t_env *e);
+int					get_both(int x1, int y1, int x2, int y2, t_env *e);
+
 #endif

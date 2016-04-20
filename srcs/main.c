@@ -14,6 +14,7 @@
 
 int		expose_hook(t_env *e)
 {
+	mlx_clear_window(e->mlx, e->win);
 	draw(e);
 	return (0);
 }
@@ -51,29 +52,39 @@ int		key_hook(int keycode, t_env *e)
 
 int						mouse_hook(int button, int x, int y, t_env *e)
 {
-	if ((button == MB_L || button == MB_UP) && x <= WIDTH && y <= HEIGHT)
+	(void)e;
+	if ((button == MB_L || button == MB_UP))
 	{
 		// printf("x \t %d \t\ty \t %d\n", x, y);
 		// printf("\t\txn \t %d \t\t yn \t %d \n", e->xn, e->yn);
-		put_pixel(e->f, x, y, RED);
+		draw_circle(e, x, y, 50);
 	}
-		mlx_put_image_to_window(e->mlx, e->win, e->f->img, 0, 0);
-	return (draw(e));
+	return (0);
 }
 
+void	init_value(t_env *e)
+{
+	e->inc = 1;
+	e->alpha = 60.0f;
+	e->beta = 30.0f;
+	e->xn = OFF;
+	e->yn = HEIGHT - OFF;
+	e->xo[0] = OFF;
+	e->yo[0] = HEIGHT - OFF;
+}
 
 void	ft_mlx(t_env *e)
 {
 	e->f = malloc(sizeof(t_img));
+
 	e->mlx = mlx_init();
-	e->win = mlx_new_window(e->mlx, WIDTH, HEIGHT, "triangle_try_angle");
-	e->f->img = mlx_new_image(e->mlx, WIDTH, HEIGHT);
+	e->win = mlx_new_window(e->mlx, WIDTH + (2 * OFF), HEIGHT + (2 * OFF), "triangle_try_angle");
+	e->f->img = mlx_new_image(e->mlx, WIDTH + (2 * OFF), HEIGHT + (2 * OFF));
 	e->f->d = mlx_get_data_addr(e->f->img, &e->f->bpp, &e->f->line_size, &e->f->endian);
 	mlx_key_hook(e->win, key_hook, e);
 	mlx_mouse_hook(e->win, mouse_hook, e);
 	mlx_expose_hook(e->win, expose_hook, e);
 	mlx_loop(e->mlx);
-	e->inc = 0;
 }
 
 int		main(int ac, char **av)

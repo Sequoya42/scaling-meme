@@ -34,8 +34,7 @@ void 				draw_circle(t_env *e, int x, int y, int l)
 	while (ang <= 360)
 	{
 		c = rainbow_color(x, ang);
-		draw_polar(x, y, ang, l, e, c);
-		draw_polar(y, x, ang, l, e, c);
-		ang+= e->inc;
+		test_misc(x, y, ang, l, e, c);
+		ang+= 1;
 	}
 }

@@ -14,7 +14,7 @@
 
 CC = gcc
 
-CFLAG = -Wall -Wextra -Werror -O3	
+CFLAG = -Wall -Wextra -Werror -g
 
 NAME = ./triangle
 
@@ -22,6 +22,7 @@ SRC = 	./srcs/draw.c\
 		./srcs/ft_put_pixel.c\
 		./srcs/main.c\
 		./srcs/draw_circle.c\
+		./srcs/misc.c\
 
 OBJ = $(subst srcs/,, $(SRC:.c=.o))
 

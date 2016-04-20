@@ -17,8 +17,19 @@
 # define MOTION_NOTIFY          8
 # define PTR_MOTION_MASK        (1 << 8)
 
-# define HEIGHT 1200
-# define WIDTH 	1700
+# define INC	(e->inc - 2)
+# define XO		(e->xo[INC])
+# define YO		(e->yo[INC])
+# define XX(x)	(e->xo[INC - x])
+# define YY(x)	(e->yo[INC - x])
+# define LX		(e->xo[0])
+# define LY		(e->yo[0])
+# define XN		(e->xo[e->inc - 1])
+# define YN		(e->yo[e->inc - 1])
+# define SYM(x) (x + ((e->xsym - x) * 2))
+	
+# define HEIGHT 820	
+# define WIDTH 	820
 # define OFF 	100
 
 # define MK_UP  126
@@ -51,9 +62,9 @@
 # define YELLOW	0xE9B21C
 # define VIOLET	0x6E47CA
 # define ORANGE	0xFF5B2B
-# define LG		0xAEEE00
-# define LR		0x8E3557
-# define LY		0xFFDA8C
+# define LGRN	0xAEEE00
+# define LRED	0x8E3557
+# define LYEL	0xFFDA8C
 
 # define D      (double)(M_PI / 180.0)
 #endif
